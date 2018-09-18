@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<style>
+    #myProgress {
+        width: 100%;
+        background-color: grey;
+    }
+    #myBar {
+        width: 1%;
+        height: 30px;
+    }
+</style>
+
+<body>
+<div id="myProgress">
+    <div id="myBar"></div>
+</div>
+<div><button id="clickBtn">Click</button></div>
+<script>
+    // https://media.giphy.com/media/3ov9jHVfZ1pQqpPqP6/giphy.gif
+
+    (function () {
+        let id, width, loadedUpTo = 1;
+        const MAX_NUMBER = 100;
+
+        function loadProgressBar() {
+            let bar = document.getElementById("myBar");
+            if (loadedUpTo < MAX_NUMBER){
+                //Loading starts from where it last stopped
+                width = loadedUpTo;
+            } else {
+                // Loading starts from beginning
+                width = 1;
+            }
+
+            id = setInterval(incrementLoading, 10);
+
+            function incrementLoading() {
+                if (width >= MAX_NUMBER) {
+                    clearInterval(id);
+                } else {
+                    width++;
+                    bar.style.width = width + '%';
+                    changeColor();
+                }
+            }
+
+            function changeColor() {
+                if (width < 40) {
+                    bar.style.background= 'linear-gradient(90deg, red 0%, red 40%)';
+                } else if (width < 70) {
+                    bar.style.background= 'linear-gradient(90deg, red 40%, green 40%, green 80%)';
+                } else {
+                    bar.style.background= 'linear-gradient(90deg, red 40%, green 40%, green 80%, blue 80%)';
+                }
+            }
+        }
+        //Long press EventHandler
+        document.getElementById('clickBtn').addEventListener('mousedown', loadProgressBar);
+        document.getElementById('clickBtn').addEventListener('mouseup', () =>  {
+            loadedUpTo = width;
+            clearInterval(id);
+        });
+    })();
+</script>
+</body>
+</html>
+
